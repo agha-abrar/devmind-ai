@@ -1,0 +1,105 @@
+name: devmind-ai
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: devmind-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-devmind}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-devmind_local_password}
+      POSTGRES_DB: ${POSTGRES_DB:-devmind}
+    ports:
+      - "5432:5432"
+    volumes:
+      - devmind_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-devmind}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: devmind-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - devmind_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: ./apps/api
+    container_name: devmind-api
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-devmind}:${POSTGRES_PASSWORD:-devmind_local_password}@postgres:5432/${POSTGRES_DB:-devmind}
+      DATABASE_URL_SYNC: postgresql+psycopg2://${POSTGRES_USER:-devmind}:${POSTGRES_PASSWORD:-devmind_local_password}@postgres:5432/${POSTGRES_DB:-devmind}
+      REDIS_URL: redis://redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/1
+      CELERY_RESULT_BACKEND: redis://redis:6379/2
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./apps/api:/app
+      - devmind_uploads:/data/uploads
+    command: >
+      sh -c "alembic upgrade head &&
+             uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+
+  worker:
+    build:
+      context: ./apps/api
+    container_name: devmind-worker
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-devmind}:${POSTGRES_PASSWORD:-devmind_local_password}@postgres:5432/${POSTGRES_DB:-devmind}
+      DATABASE_URL_SYNC: postgresql+psycopg2://${POSTGRES_USER:-devmind}:${POSTGRES_PASSWORD:-devmind_local_password}@postgres:5432/${POSTGRES_DB:-devmind}
+      REDIS_URL: redis://redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/1
+      CELERY_RESULT_BACKEND: redis://redis:6379/2
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./apps/api:/app
+      - devmind_uploads:/data/uploads
+    command: celery -A app.workers.celery_app worker --loglevel=info --concurrency=2
+
+  web:
+    build:
+      context: ./apps/web
+    container_name: devmind-web
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000}
+    depends_on:
+      - api
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./apps/web:/app
+      - devmind_web_node_modules:/app/node_modules
+
+volumes:
+  devmind_postgres_data:
+  devmind_redis_data:
+  devmind_uploads:
+  devmind_web_node_modules:

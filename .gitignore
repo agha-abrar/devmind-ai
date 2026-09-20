@@ -1,0 +1,37 @@
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+apps/web/.next/
+apps/web/node_modules/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+
+# Uploads (local dev artifact storage)
+apps/api/uploads/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+
+# Logs
+*.log
+
+# TypeScript incremental build cache
+*.tsbuildinfo

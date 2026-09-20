@@ -1,0 +1,19 @@
+{
+  "cases": [
+    {
+      "question": "Where is JWT access token creation implemented?",
+      "expected_file_paths": ["app/core/security.py"],
+      "expected_keywords": ["create_access_token"]
+    },
+    {
+      "question": "How does the reviewer agent decide whether an answer is grounded?",
+      "expected_file_paths": ["app/agents/nodes_core.py"],
+      "expected_keywords": ["review_status"]
+    },
+    {
+      "question": "What does the hybrid search combine?",
+      "expected_file_paths": ["app/rag/hybrid_search.py"],
+      "expected_keywords": ["reciprocal rank", "vector", "full-text"]
+    }
+  ]
+}
