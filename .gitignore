@@ -35,3 +35,6 @@ apps/api/uploads/
 
 # TypeScript incremental build cache
 *.tsbuildinfo
+
+# Persistent local service data
+.local/

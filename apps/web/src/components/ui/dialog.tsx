@@ -31,13 +31,13 @@ export function Dialog({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/50" onClick={onClose} aria-hidden="true" />
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="dialog-title"
         className={cn(
-          "relative z-10 w-full max-w-md rounded-lg border border-border bg-card p-6 shadow-lg",
+          "animate-enter relative z-10 w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-2xl",
           className
         )}
       >
@@ -94,8 +94,8 @@ export function ConfirmDialog({
             onClose();
           }}
           className={cn(
-            "h-9 rounded-md px-4 text-sm font-medium text-white",
-            destructive ? "bg-destructive hover:opacity-90" : "bg-primary hover:opacity-90"
+            "h-9 rounded-md px-4 text-sm font-medium",
+            destructive ? "bg-destructive text-destructive-foreground hover:opacity-90" : "bg-primary text-primary-foreground hover:opacity-90"
           )}
         >
           {confirmLabel}

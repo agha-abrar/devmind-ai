@@ -48,20 +48,21 @@ export function SourceViewerDialog({ citation, onClose }: { citation: Citation |
           ? "Source code evidence used for this citation"
           : "Document passage used for this citation"
       }
-      className="max-w-3xl"
+      className="max-w-3xl rounded-2xl"
     >
-      <div className="flex items-center gap-2 pb-3 text-sm text-muted-foreground">
+      <div className="mb-3 flex items-center gap-2 rounded-lg border border-border bg-background/60 px-3 py-2.5 font-mono text-xs text-muted-foreground">
         {citation.source_type === "code_file" ? <Code2 className="h-4 w-4" /> : <FileText className="h-4 w-4" />}
-        {citation.repository_full_name && <span>{citation.repository_full_name}</span>}
+        {citation.repository_full_name && <span className="truncate">{citation.repository_full_name}</span>}
+        <span className="ml-auto shrink-0 text-[10px] text-primary">{citation.start_line ? `L${citation.start_line}${citation.end_line ? `–${citation.end_line}` : ""}` : "Source evidence"}</span>
       </div>
-      <div className="max-h-[60vh] overflow-auto rounded-md border border-border scrollbar-thin">
+      <div className="max-h-[60vh] overflow-auto rounded-xl border border-border scrollbar-thin">
         <SyntaxHighlighter
           language={languageFromPath(citation.file_path)}
           style={oneDark}
           showLineNumbers
           startingLineNumber={startLine}
           wrapLongLines
-          customStyle={{ margin: 0, fontSize: "0.8rem" }}
+          customStyle={{ margin: 0, fontSize: "0.75rem", lineHeight: 1.8, background: "#101519" }}
           lineNumberStyle={{ opacity: 0.4, minWidth: "2.5em" }}
         >
           {lines.join("\n")}

@@ -4,7 +4,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { Bot, User, Copy, Check } from "lucide-react";
+import { Terminal, User, Copy, Check, Code2 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import type { Citation } from "@/lib/types";
@@ -25,9 +25,9 @@ function CodeBlock({ language, code }: { language: string; code: string }) {
   }
 
   return (
-    <div className="relative my-2 overflow-hidden rounded-md border border-border">
-      <div className="flex items-center justify-between bg-muted px-3 py-1.5 text-xs text-muted-foreground">
-        <span>{language || "text"}</span>
+    <div className="relative my-4 overflow-hidden rounded-xl border border-border">
+      <div className="flex items-center justify-between border-b border-border bg-background/70 px-4 py-2.5 font-mono text-[10px] text-muted-foreground">
+        <span className="flex items-center gap-2"><Code2 className="h-3 w-3 text-primary/70" />{language || "text"}</span>
         <button onClick={handleCopy} className="flex items-center gap-1 hover:text-foreground">
           {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
           {copied ? "Copied" : "Copy"}
@@ -36,7 +36,7 @@ function CodeBlock({ language, code }: { language: string; code: string }) {
       <SyntaxHighlighter
         language={language || "text"}
         style={oneDark}
-        customStyle={{ margin: 0, fontSize: "0.8rem" }}
+        customStyle={{ margin: 0, fontSize: "0.75rem", background: "#101519", padding: "1rem", lineHeight: 1.75 }}
       >
         {code}
       </SyntaxHighlighter>
@@ -60,25 +60,26 @@ export function MessageBubble({
   const isUser = role === "user";
 
   return (
-    <div className={cn("flex gap-3", isUser && "flex-row-reverse")}>
+    <div className={cn("animate-enter flex min-w-0 gap-3", isUser && "flex-row-reverse")}>
       <div
         className={cn(
-          "flex h-7 w-7 shrink-0 items-center justify-center rounded-full",
-          isUser ? "bg-primary text-primary-foreground" : "bg-muted"
+          "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border",
+          isUser ? "border-border bg-muted text-muted-foreground" : "border-primary/25 bg-primary/10 text-primary"
         )}
       >
-        {isUser ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
+        {isUser ? <User className="h-4 w-4" /> : <Terminal className="h-4 w-4" />}
       </div>
       <div
         className={cn(
-          "max-w-[80%] rounded-lg px-4 py-3 text-sm",
-          isUser ? "bg-primary text-primary-foreground" : "bg-muted"
+          "min-w-0 max-w-[calc(100%-44px)] text-sm leading-relaxed",
+          isUser ? "rounded-xl rounded-tr-sm border border-border bg-card px-4 py-3 text-foreground" : "flex-1 pt-1"
         )}
       >
         {isUser ? (
           <p className="whitespace-pre-wrap">{content}</p>
         ) : (
-          <div className="markdown-body">
+          <div className="markdown-body break-words">
+            <div className="mb-3 flex items-center gap-2"><span className="text-xs font-semibold tracking-tight">DevMind</span><span className="rounded border border-primary/20 bg-primary/[0.06] px-1.5 py-0.5 font-mono text-[8px] uppercase tracking-wide text-primary">AI</span>{isStreaming && <span className="font-mono text-[9px] text-muted-foreground">working...</span>}</div>
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               components={{
@@ -108,7 +109,7 @@ export function MessageBubble({
                   const isInline = !match && !String(children).includes("\n");
                   if (isInline) {
                     return (
-                      <code className="rounded bg-background/60 px-1 py-0.5 text-xs" {...props}>
+                      <code className="rounded border border-border/70 bg-card px-1.5 py-0.5 font-mono text-xs text-primary/90" {...props}>
                         {children}
                       </code>
                     );
@@ -121,7 +122,7 @@ export function MessageBubble({
             >
               {linkifyCitations(content)}
             </ReactMarkdown>
-            {isStreaming && <span className="ml-0.5 inline-block h-4 w-1.5 animate-pulse bg-foreground/50" />}
+            {isStreaming && <span className="ml-0.5 inline-block h-4 w-1.5 animate-pulse bg-primary/70" />}
           </div>
         )}
       </div>

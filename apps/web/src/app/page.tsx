@@ -1,179 +1,203 @@
 import Link from "next/link";
 import {
-  GitBranch,
-  FileText,
-  Network,
-  Bug,
-  ClipboardList,
-  ShieldCheck,
+  ArrowDown,
   ArrowRight,
-  Brain,
+  BookOpen,
+  Braces,
+  Check,
+  CheckCheck,
+  ChevronRight,
+  Code2,
+  FileCode2,
+  GitBranch,
+  Network,
+  ShieldCheck,
+  Sparkles,
+  Terminal,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const FEATURES = [
   {
-    icon: GitBranch,
-    title: "Repository ingestion",
+    number: "01",
+    icon: Code2,
+    title: "Your code. In context.",
     description:
-      "Connect a GitHub repository and DevMind AI indexes it with structure-aware chunking — functions, classes, and modules, not arbitrary text slices.",
+      "Connect repositories and documentation. Find the functions, decisions, and dependencies behind every answer.",
+    detail: "CODE + DOCUMENT INTELLIGENCE",
   },
   {
-    icon: FileText,
-    title: "Documentation knowledge",
-    description:
-      "Upload READMEs, PDFs, and Word docs. They're chunked by heading/section and embedded alongside your code.",
-  },
-  {
+    number: "02",
     icon: Network,
-    title: "Hybrid retrieval",
+    title: "A team of specialists.",
     description:
-      "Vector similarity and PostgreSQL full-text search are fused with reciprocal rank fusion, then reranked before reaching any agent.",
+      "Code, architecture, and debugging agents work together to turn a complex question into a clear next step.",
+    detail: "MULTI-AGENT REASONING",
   },
   {
-    icon: Bug,
-    title: "Debugging agent",
-    description:
-      "Separates retrieved evidence from hypotheses when reasoning about an error, instead of confidently guessing.",
-  },
-  {
-    icon: ClipboardList,
-    title: "Implementation planning",
-    description:
-      "Ask what it would take to add a feature and get a plan grounded in the files that actually exist in your repo.",
-  },
-  {
+    number: "03",
     icon: ShieldCheck,
-    title: "Evidence review",
+    title: "Evidence you can open.",
     description:
-      "A reviewer agent checks every claim against retrieved evidence before you see an answer, and retries retrieval when evidence is thin.",
+      "Follow citations back to the source. Review the files, inspect the agent run, and understand how the answer was built.",
+    detail: "SOURCE-GROUNDED ANSWERS",
   },
 ];
 
-const STEPS = [
-  {
-    title: "Connect your knowledge",
-    description: "Link a GitHub repository and upload supporting documentation to a project.",
-  },
-  {
-    title: "Ask a real question",
-    description:
-      "\"Where is JWT validation implemented?\" or \"What would it take to add rate limiting?\"",
-  },
-  {
-    title: "A supervisor routes the work",
-    description:
-      "Only the specialist agents the question actually needs are invoked — code retrieval, docs, debugging, architecture, or planning.",
-  },
-  {
-    title: "Get a cited, reviewed answer",
-    description:
-      "A reviewer agent checks the answer against evidence before it streams to you, with clickable citations to exact files and lines.",
-  },
-];
+function EditorPreview() {
+  return (
+    <div className="relative min-w-0 animate-enter stagger-2">
+      <div className="absolute -inset-8 -z-10 rounded-full bg-emerald-500/[0.06] blur-3xl" aria-hidden="true" />
+      <div className="overflow-hidden rounded-xl border border-white/[0.12] bg-[#0c1015] shadow-[0_35px_100px_-30px_rgba(0,0,0,0.8)]">
+        <div className="flex h-11 items-center justify-between border-b border-white/[0.07] bg-white/[0.025] px-4">
+          <div className="flex gap-1.5" aria-hidden="true">
+            <span className="h-2.5 w-2.5 rounded-full bg-[#fa726a]/80" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#ebbe4f]/80" />
+            <span className="h-2.5 w-2.5 rounded-full bg-[#57c690]/80" />
+          </div>
+          <span className="font-mono text-[10px] text-slate-500">devmind / workspace</span>
+          <span className="rounded border border-white/10 px-1.5 py-0.5 font-mono text-[9px] text-slate-400">PREVIEW</span>
+        </div>
+        <div className="flex min-h-[425px]">
+          <div className="hidden w-11 shrink-0 flex-col items-center gap-6 border-r border-white/[0.06] py-5 text-slate-600 sm:flex" aria-hidden="true">
+            <Braces className="h-4 w-4 text-emerald-400" />
+            <GitBranch className="h-4 w-4" />
+            <BookOpen className="h-4 w-4" />
+            <Network className="h-4 w-4" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2 border-b border-white/[0.06] px-4 py-3 font-mono text-[10px] text-slate-400">
+              <FileCode2 className="h-3 w-3 text-emerald-400" />
+              auth/middleware.ts
+              <span className="ml-auto text-slate-600">TypeScript</span>
+            </div>
+            <div className="overflow-x-auto px-4 py-5 font-mono text-[11px] leading-[1.9] sm:text-xs" aria-label="Example authentication code">
+              <div className="flex gap-4"><span className="select-none text-slate-700">01</span><code><span className="text-purple-300">export async function</span> <span className="text-sky-300">authenticate</span><span className="text-slate-300">(req) {"{"}</span></code></div>
+              <div className="flex gap-4"><span className="select-none text-slate-700">02</span><code className="whitespace-pre">  <span className="text-purple-300">const</span> <span className="text-slate-300">token = req.headers.authorization;</span></code></div>
+              <div className="-mx-4 my-1 flex gap-4 border-l-2 border-emerald-400 bg-emerald-400/[0.06] px-3.5"><span className="select-none text-emerald-500/60">03</span><code className="whitespace-pre">  <span className="text-purple-300">const</span> <span className="text-slate-300">user = </span><span className="text-purple-300">await</span> <span className="text-sky-300">verifyToken</span><span className="text-slate-300">(token);</span></code></div>
+              <div className="flex gap-4"><span className="select-none text-slate-700">04</span><code className="whitespace-pre">  <span className="text-purple-300">return</span> <span className="text-slate-300">user;</span></code></div>
+              <div className="flex gap-4"><span className="select-none text-slate-700">05</span><code className="text-slate-300">{"}"}</code></div>
+            </div>
+            <div className="border-t border-white/[0.07] bg-[#10151b] px-4 pb-5 pt-4 sm:px-5">
+              <div className="mb-4 flex items-center gap-2 text-[10px] font-medium tracking-widest text-slate-400"><Sparkles className="h-3.5 w-3.5 text-emerald-400" /> DEVMIND ASSISTANT</div>
+              <div className="mb-4 flex justify-end"><p className="max-w-[90%] rounded-lg rounded-br-sm border border-white/[0.06] bg-white/[0.04] px-3 py-2.5 text-xs text-slate-200">Where does our API validate a user&apos;s token?</p></div>
+              <div className="flex gap-3">
+                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-emerald-400/10"><Braces className="h-3.5 w-3.5 text-emerald-400" /></div>
+                <div>
+                  <p className="text-xs leading-relaxed text-slate-400">Token validation happens in <span className="text-slate-200">authenticate()</span>. It reads the authorization header and passes the token to <span className="text-emerald-300">verifyToken()</span>.</p>
+                  <span className="mt-3 inline-flex items-center gap-1.5 rounded border border-emerald-400/15 bg-emerald-400/5 px-2 py-1 font-mono text-[10px] text-emerald-400"><FileCode2 className="h-3 w-3" /> middleware.ts:1–5 <ChevronRight className="h-3 w-3" /></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center justify-between border-t border-white/[0.07] bg-emerald-400/[0.04] px-4 py-2 font-mono text-[9px] text-slate-500 sm:text-[10px]">
+          <span className="flex items-center gap-1.5"><GitBranch className="h-3 w-3" /> main</span>
+          <span className="flex items-center gap-1.5 text-emerald-400/80"><CheckCheck className="h-3 w-3" /> Example answer with source citation</span>
+        </div>
+      </div>
+      <div className="animate-float absolute -bottom-6 -left-4 hidden items-center gap-3 rounded-xl border border-white/10 bg-[#141b22] px-4 py-3 shadow-xl sm:flex">
+        <span className="flex h-8 w-8 items-center justify-center rounded-full border border-emerald-400/20 bg-emerald-400/10"><ShieldCheck className="h-4 w-4 text-emerald-400" /></span>
+        <div><p className="text-xs font-medium text-slate-200">Grounded in your code</p><p className="mt-0.5 font-mono text-[10px] text-slate-500">retrieve → reason → review</p></div>
+      </div>
+    </div>
+  );
+}
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-2 font-semibold">
-            <Brain className="h-5 w-5 text-primary" />
-            DevMind AI
-          </div>
-          <nav className="flex items-center gap-4">
-            <Link href="/login" className="text-sm font-medium text-muted-foreground hover:text-foreground">
-              Log in
-            </Link>
-            <Button asChild size="sm">
-              <Link href="/register">Get started</Link>
-            </Button>
+    <div className="relative min-h-screen overflow-hidden">
+      <header className="relative z-20 border-b border-white/[0.06] bg-background/60 backdrop-blur-xl">
+        <div className="mx-auto flex h-20 max-w-[1240px] items-center justify-between gap-3 px-4 sm:px-6 lg:px-10">
+          <Link href="/" className="flex items-center gap-2.5 text-lg font-semibold tracking-tight" aria-label="DevMind AI home">
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-emerald-400/25 bg-emerald-400/10"><Braces className="h-5 w-5 text-emerald-400" /></span>
+            <span className="hidden min-[380px]:inline">DevMind <span className="text-emerald-400">AI</span></span>
+          </Link>
+          <nav className="hidden items-center gap-8 text-xs text-muted-foreground md:flex" aria-label="Main navigation">
+            <Link href="#capabilities" className="transition-colors hover:text-foreground">Capabilities</Link>
+            <Link href="#workflow" className="transition-colors hover:text-foreground">How it works</Link>
           </nav>
+          <div className="flex shrink-0 items-center gap-3 sm:gap-5">
+            <Link href="/login" className="whitespace-nowrap text-xs font-medium text-muted-foreground transition-colors hover:text-foreground">Log in</Link>
+            <Button asChild size="sm" className="h-9 text-xs"><Link href="/register">Get started <ArrowRight className="h-3.5 w-3.5" /></Link></Button>
+          </div>
         </div>
       </header>
 
-      <section className="mx-auto max-w-4xl px-6 py-24 text-center">
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-          Understand your codebase with AI agents
-        </h1>
-        <p className="mx-auto mt-5 max-w-2xl text-lg text-muted-foreground">
-          DevMind AI indexes your repositories and documentation, then answers questions with a
-          multi-agent workflow that retrieves real evidence, reasons over it, and cites exactly
-          where every claim comes from.
-        </p>
-        <div className="mt-8 flex justify-center gap-3">
-          <Button asChild size="lg">
-            <Link href="/register">
-              Start free <ArrowRight className="h-4 w-4" />
-            </Link>
-          </Button>
-          <Button asChild size="lg" variant="outline">
-            <Link href="/login">I already have an account</Link>
-          </Button>
-        </div>
-      </section>
+      <main className="relative z-10">
+        <section className="mx-auto grid max-w-[1240px] grid-cols-1 items-center gap-14 px-6 pb-24 pt-16 lg:grid-cols-[1fr_1.05fr] lg:gap-16 lg:px-10 lg:pb-32 lg:pt-24">
+          <div className="min-w-0 animate-enter">
+            <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-emerald-400/15 bg-emerald-400/5 px-3 py-1.5 font-mono text-[10px] tracking-wider text-emerald-300">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> YOUR CODEBASE, CONNECTED
+            </div>
+            <h1 className="max-w-xl text-[44px] font-semibold leading-[1.09] tracking-[-0.055em] sm:text-[58px] lg:text-[62px]">
+              Less searching.<br />More <span className="text-emerald-400">building.</span>
+            </h1>
+            <p className="mt-6 max-w-md text-[15px] leading-[1.85] text-muted-foreground">Meet the AI workspace that understands your code. Explore repositories, untangle bugs, and plan your next move—with answers grounded in your source.</p>
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <Button asChild size="lg" className="h-12 px-5 text-sm shadow-[0_0_30px_-10px_rgba(52,211,153,0.35)]"><Link href="/register">Open your workspace <ArrowRight className="h-4 w-4" /></Link></Button>
+              <Button asChild variant="outline" size="lg" className="h-12 border-white/10 px-5 text-sm"><Link href="#workflow">Explore the workflow <ArrowDown className="h-3.5 w-3.5" /></Link></Button>
+            </div>
+            <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-[11px] text-slate-500">
+              <span className="flex items-center gap-1.5"><Check className="h-3 w-3 text-emerald-400/70" /> GitHub + documentation</span>
+              <span className="flex items-center gap-1.5"><Check className="h-3 w-3 text-emerald-400/70" /> Cited, reviewed answers</span>
+            </div>
+          </div>
+          <EditorPreview />
+        </section>
 
-      <section className="border-t border-border bg-muted/30 py-20">
-        <div className="mx-auto max-w-6xl px-6">
-          <h2 className="text-center text-2xl font-semibold">Built for how engineers actually work</h2>
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <section className="border-y border-white/[0.06] bg-white/[0.015]">
+          <div className="mx-auto flex max-w-[1240px] flex-wrap items-center justify-between gap-x-8 gap-y-5 px-6 py-6 lg:px-10">
+            <p className="font-mono text-[10px] tracking-widest text-slate-500">BUILT FOR THE WAY YOU THINK</p>
+            <div className="flex flex-wrap gap-6 text-xs text-slate-400 sm:gap-10">
+              <span className="flex items-center gap-2"><GitBranch className="h-4 w-4 text-slate-500" /> Repository aware</span>
+              <span className="flex items-center gap-2"><Terminal className="h-4 w-4 text-slate-500" /> Developer first</span>
+              <span className="flex items-center gap-2"><Network className="h-4 w-4 text-slate-500" /> Multi-agent intelligence</span>
+            </div>
+          </div>
+        </section>
+
+        <section id="capabilities" className="mx-auto max-w-[1240px] scroll-mt-8 px-6 py-24 lg:px-10">
+          <div className="mb-10 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+            <div><p className="eyebrow mb-3">BUILT FOR BUILDERS</p><h2 className="text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">Go from unfamiliar to understood.</h2></div>
+            <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">Everything you need to find your footing in a codebase. And keep moving.</p>
+          </div>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             {FEATURES.map((feature) => (
-              <div key={feature.title} className="rounded-lg border border-border bg-card p-6">
-                <feature.icon className="h-6 w-6 text-primary" />
-                <h3 className="mt-4 font-semibold">{feature.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{feature.description}</p>
-              </div>
+              <article key={feature.number} className="group rounded-xl border border-white/[0.07] bg-card/60 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-emerald-400/20 hover:bg-card">
+                <div className="flex items-center justify-between"><span className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/[0.07] bg-white/[0.03] text-emerald-400"><feature.icon className="h-5 w-5" /></span><span className="font-mono text-xs text-slate-600">/{feature.number}</span></div>
+                <h3 className="mt-7 text-lg font-medium tracking-tight">{feature.title}</h3>
+                <p className="mt-3 text-sm leading-[1.8] text-muted-foreground">{feature.description}</p>
+                <p className="mt-7 border-t border-white/[0.06] pt-5 font-mono text-[9px] tracking-widest text-slate-500 transition-colors group-hover:text-emerald-400/80">{feature.detail}</p>
+              </article>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="py-20">
-        <div className="mx-auto max-w-4xl px-6">
-          <h2 className="text-center text-2xl font-semibold">How it works</h2>
-          <p className="mx-auto mt-3 max-w-2xl text-center text-muted-foreground">
-            RAG plus multi-agent orchestration, not a single prompt wrapped around your repo.
-          </p>
-          <ol className="mt-12 space-y-8">
-            {STEPS.map((step, i) => (
-              <li key={step.title} className="flex gap-4">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
-                  {i + 1}
-                </div>
-                <div>
-                  <h3 className="font-semibold">{step.title}</h3>
-                  <p className="mt-1 text-sm text-muted-foreground">{step.description}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      <section className="border-t border-border py-20">
-        <div className="mx-auto max-w-2xl px-6 text-center">
-          <h2 className="text-2xl font-semibold">Ready to index your codebase?</h2>
-          <p className="mt-3 text-muted-foreground">
-            Create a project, connect a repository, and ask your first grounded question.
-          </p>
-          <div className="mt-6">
-            <Button asChild size="lg">
-              <Link href="/register">
-                Get started <ArrowRight className="h-4 w-4" />
-              </Link>
-            </Button>
+        <section id="workflow" className="mx-auto max-w-[1240px] scroll-mt-8 px-6 pb-24 lg:px-10">
+          <div className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-card/70 p-7 sm:p-10 lg:p-12">
+            <div className="pointer-events-none absolute -right-16 -top-24 h-80 w-80 rounded-full bg-emerald-500/[0.05] blur-3xl" aria-hidden="true" />
+            <div className="relative grid grid-cols-1 gap-12 lg:grid-cols-[0.9fr_1fr] lg:gap-20">
+              <div className="min-w-0"><p className="eyebrow mb-3">FROM QUESTION TO CLARITY</p><h2 className="text-3xl font-semibold leading-tight tracking-[-0.035em]">Your next breakthrough<br />starts with a question.</h2><p className="mt-5 max-w-sm text-sm leading-[1.8] text-muted-foreground">Bring your code and your curiosity. DevMind connects the dots, so you can focus on what comes next.</p><Button asChild className="mt-7 h-auto min-h-9 max-w-full whitespace-normal px-3 text-xs sm:px-4 sm:text-sm" variant="outline"><Link href="/register">Create your workspace <ArrowRight className="h-4 w-4 shrink-0" /></Link></Button></div>
+              <ol className="space-y-7">
+                {[
+                  ["Connect your code", "Create a project, add a GitHub repository, and upload your docs."],
+                  ["Ask anything about it", "Trace a request, investigate a bug, or map out a new feature."],
+                  ["Follow the evidence", "Get a reviewed answer with sources and a transparent agent trace."],
+                ].map(([title, description], index) => (
+                  <li key={title} className="relative flex gap-5">
+                    {index < 2 ? <span className="absolute left-[17px] top-10 h-12 border-l border-dashed border-white/10" aria-hidden="true" /> : null}
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-emerald-400/20 bg-emerald-400/5 font-mono text-xs text-emerald-400">0{index + 1}</span>
+                    <div className="pt-1"><h3 className="text-sm font-medium">{title}</h3><p className="mt-2 text-xs leading-relaxed text-muted-foreground">{description}</p></div>
+                  </li>
+                ))}
+              </ol>
+            </div>
           </div>
-        </div>
-      </section>
-
-      <footer className="border-t border-border py-10">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 text-sm text-muted-foreground sm:flex-row">
-          <div className="flex items-center gap-2">
-            <Brain className="h-4 w-4" />
-            DevMind AI
-          </div>
-          <p>Multi-agent code intelligence workspace for software teams.</p>
-        </div>
+        </section>
+      </main>
+      <footer className="relative z-10 border-t border-white/[0.06]">
+        <div className="mx-auto flex max-w-[1240px] flex-col justify-between gap-4 px-6 py-7 text-xs text-slate-500 sm:flex-row lg:px-10"><span className="flex items-center gap-2 font-medium text-slate-400"><Braces className="h-4 w-4 text-emerald-400" /> DevMind AI</span><p>A little less friction. A lot more flow.</p><span className="font-mono text-[10px]">BUILT FOR YOUR NEXT COMMIT</span></div>
       </footer>
     </div>
   );
